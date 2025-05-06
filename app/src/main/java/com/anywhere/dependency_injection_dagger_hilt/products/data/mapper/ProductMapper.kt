@@ -6,7 +6,7 @@ import com.anywhere.dependency_injection_dagger_hilt.products.domain.model.Produ
 import javax.inject.Inject
 
 
-class ProductDtoMapper @Inject constructor() {
+class ProductDtoMapper {
     fun map(dto: ProductDto): Product {
         return Product(
             id = dto.id,
