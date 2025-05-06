@@ -3,6 +3,7 @@ package com.anywhere.dependency_injection_dagger_hilt.products.presentation.prod
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.anywhere.dependency_injection_dagger_hilt.products.domain.model.Product
 import com.anywhere.dependency_injection_dagger_hilt.products.domain.model.SearchParams
 import com.anywhere.dependency_injection_dagger_hilt.products.domain.usecase.SearchProductsUseCase
 import com.anywhere.dependency_injection_dagger_hilt.products.util.Resource
@@ -27,90 +28,66 @@ class SearchViewModel @Inject constructor(
     val productsState: StateFlow<ProductsState> = _productsState.asStateFlow()
 
     init {
-        viewModelScope.launch {
+        observeCategories()
+        observeProductResults()
+        triggerInitialRefresh()
+    }
+
+    private fun observeCategories() {
+        viewModelScope.launch(Dispatchers.IO) {
             searchProductsUseCase.getCategories()
-                .catch { e ->
-                    _productsState.update {
-                        it.copy(
-                            categories = emptyList(),
-                            isLoading = false,
-                            error = e.message
-                        )
-                    }
-                }.flowOn(Dispatchers.IO)
                 .collect { categories ->
                     _productsState.update { it.copy(categories = categories) }
                 }
         }
+    }
 
+    private fun observeProductResults() {
         val searchFlow = _searchParams
             .debounce(300)
             .distinctUntilChanged()
             .flatMapLatest { params ->
-                searchProductsUseCase(params).catch {
-                    _productsState.update {
-                        it.copy(
-                            products = emptyList(),
-                            isLoading = false,
-                            error = it.error
-                        )
-                    }
-                }.flowOn(Dispatchers.IO)
+                searchProductsUseCase(params)
             }
 
         val refreshFlow = _manualRefresh
             .flatMapLatest {
-                searchProductsUseCase.refresh(_searchParams.value).catch {
-                    _productsState.update {
-                        it.copy(
-                            products = emptyList(),
-                            isLoading = false,
-                            error = it.error
-                        )
-                    }
-                }.flowOn(Dispatchers.IO)
+                searchProductsUseCase.refresh(_searchParams.value)
             }
 
-        viewModelScope.launch {
-            merge(searchFlow, refreshFlow)
-                .collect { result ->
-                    when (result) {
-                        is Resource.Success -> {
-                            _productsState.update {
-                                it.copy(
-                                    products = result.data ?: emptyList(),
-                                    isLoading = false,
-                                    error = null
-                                )
-                            }
-                        }
+        merge(searchFlow, refreshFlow)
+            .onEach { result -> handleResult(result) }
+            .flowOn(Dispatchers.IO)
+            .launchIn(viewModelScope)
+    }
 
-                        is Resource.Error -> {
-                            _productsState.update {
-                                it.copy(
-                                    products = result.data ?: emptyList(),
-                                    isLoading = false,
-                                    error = result.message
-                                )
-                            }
-                        }
-
-                        is Resource.Loading -> {
-                            _productsState.update {
-                                it.copy(
-                                    isLoading = true,
-                                    error = null
-                                )
-                            }
-                        }
-                    }
-                }
+    private fun handleResult(result: Resource<List<Product>>) {
+        _productsState.update {
+            when (result) {
+                is Resource.Success -> it.copy(
+                    products = result.data ?: emptyList(),
+                    isLoading = false,
+                    error = null
+                )
+                is Resource.Error -> it.copy(
+                    products = result.data ?: emptyList(),
+                    isLoading = false,
+                    error = result.message
+                )
+                is Resource.Loading -> it.copy(
+                    isLoading = true,
+                    error = null
+                )
+            }
         }
+    }
 
+    private fun triggerInitialRefresh() {
         viewModelScope.launch {
             _manualRefresh.emit(Unit)
         }
     }
+
 
     fun onEvent(event: SearchEvent) {
         when (event) {
