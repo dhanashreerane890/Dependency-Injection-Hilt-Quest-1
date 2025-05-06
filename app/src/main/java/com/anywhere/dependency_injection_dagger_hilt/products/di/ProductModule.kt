@@ -5,9 +5,7 @@ import androidx.room.Room
 import com.anywhere.dependency_injection_dagger_hilt.products.data.local.AppDatabase
 import com.anywhere.dependency_injection_dagger_hilt.products.data.local.ProductDao
 import com.anywhere.dependency_injection_dagger_hilt.products.data.mapper.ProductDtoMapper
-//import com.anywhere.dependency_injection_dagger_hilt.data.remote.ApiService
 import com.anywhere.dependency_injection_dagger_hilt.products.data.remote.ProductApiService
-//import com.anywhere.dependency_injection_dagger_hilt.data.repository.EventRepositoryImpl
 import com.anywhere.dependency_injection_dagger_hilt.products.data.repository.ProductRepositoryImpl
 import com.anywhere.dependency_injection_dagger_hilt.products.domain.repository.ProductRepository
 import dagger.Module
