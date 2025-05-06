@@ -1,4 +1,4 @@
-package com.anywhere.dependency_injection_dagger_hilt.products.data.model.product
+package com.anywhere.dependency_injection_dagger_hilt.products.data.model
 
 data class ProductDto(
     val id: Int,

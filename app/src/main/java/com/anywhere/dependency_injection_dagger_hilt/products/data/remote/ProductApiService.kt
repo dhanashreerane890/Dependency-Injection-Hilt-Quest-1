@@ -1,6 +1,6 @@
 package com.anywhere.dependency_injection_dagger_hilt.products.data.remote
 
-import com.anywhere.dependency_injection_dagger_hilt.products.data.model.product.ProductResponseDto
+import com.anywhere.dependency_injection_dagger_hilt.products.data.model.ProductResponseDto
 import retrofit2.http.GET
 import retrofit2.http.Query
 

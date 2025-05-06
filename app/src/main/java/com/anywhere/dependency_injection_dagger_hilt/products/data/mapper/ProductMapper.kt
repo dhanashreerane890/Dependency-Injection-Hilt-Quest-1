@@ -1,7 +1,7 @@
 package com.anywhere.dependency_injection_dagger_hilt.products.data.mapper
 
 import com.anywhere.dependency_injection_dagger_hilt.products.data.local.ProductEntity
-import com.anywhere.dependency_injection_dagger_hilt.products.data.model.product.ProductDto
+import com.anywhere.dependency_injection_dagger_hilt.products.data.model.ProductDto
 import com.anywhere.dependency_injection_dagger_hilt.products.domain.model.Product
 import javax.inject.Inject
 
