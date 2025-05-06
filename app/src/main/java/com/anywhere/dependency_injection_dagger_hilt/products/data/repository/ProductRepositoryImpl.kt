@@ -11,6 +11,7 @@ import com.anywhere.dependency_injection_dagger_hilt.products.domain.repository.
 import com.anywhere.dependency_injection_dagger_hilt.products.util.Resource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import retrofit2.HttpException
 import javax.inject.Inject
 
 class ProductRepositoryImpl @Inject constructor(
@@ -53,8 +54,10 @@ class ProductRepositoryImpl @Inject constructor(
 
                 emit(Resource.Success(sortedProducts))
 
+            } catch (e: HttpException) {
+                emit(Resource.Error("Please Check your internet connection."))
             } catch (e: Exception) {
-                Log.e("TAG", "searchProducts error: ${e.message} ")
+                emit(Resource.Error("${e.message}"))
             }
         }
     }
@@ -84,8 +87,10 @@ class ProductRepositoryImpl @Inject constructor(
 
             }
             emit(Resource.Success(sortedProducts))
-        } catch (e: Exception) {
+        } catch (e: HttpException) {
             emit(Resource.Error("Please Check your internet connection."))
+        } catch (e: Exception) {
+            emit(Resource.Error("${e.message}"))
         }
     }
 

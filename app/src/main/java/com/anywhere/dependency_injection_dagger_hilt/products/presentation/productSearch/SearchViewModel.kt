@@ -7,6 +7,7 @@ import com.anywhere.dependency_injection_dagger_hilt.products.domain.model.Searc
 import com.anywhere.dependency_injection_dagger_hilt.products.domain.usecase.SearchProductsUseCase
 import com.anywhere.dependency_injection_dagger_hilt.products.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.*
@@ -28,6 +29,15 @@ class SearchViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             searchProductsUseCase.getCategories()
+                .catch { e ->
+                    _productsState.update {
+                        it.copy(
+                            categories = emptyList(),
+                            isLoading = false,
+                            error = e.message
+                        )
+                    }
+                }.flowOn(Dispatchers.IO)
                 .collect { categories ->
                     _productsState.update { it.copy(categories = categories) }
                 }
@@ -37,12 +47,28 @@ class SearchViewModel @Inject constructor(
             .debounce(300)
             .distinctUntilChanged()
             .flatMapLatest { params ->
-                searchProductsUseCase(params)
+                searchProductsUseCase(params).catch {
+                    _productsState.update {
+                        it.copy(
+                            products = emptyList(),
+                            isLoading = false,
+                            error = it.error
+                        )
+                    }
+                }.flowOn(Dispatchers.IO)
             }
 
         val refreshFlow = _manualRefresh
             .flatMapLatest {
-                searchProductsUseCase.refresh(_searchParams.value)
+                searchProductsUseCase.refresh(_searchParams.value).catch {
+                    _productsState.update {
+                        it.copy(
+                            products = emptyList(),
+                            isLoading = false,
+                            error = it.error
+                        )
+                    }
+                }.flowOn(Dispatchers.IO)
             }
 
         viewModelScope.launch {
