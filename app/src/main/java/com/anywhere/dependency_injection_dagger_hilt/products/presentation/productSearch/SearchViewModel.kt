@@ -3,9 +3,7 @@ package com.anywhere.dependency_injection_dagger_hilt.products.presentation.prod
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.anywhere.dependency_injection_dagger_hilt.products.domain.model.product.Product
-import com.anywhere.dependency_injection_dagger_hilt.products.domain.model.product.SearchParams
-import com.anywhere.dependency_injection_dagger_hilt.products.domain.repository.ProductRepository
+import com.anywhere.dependency_injection_dagger_hilt.products.domain.model.SearchParams
 import com.anywhere.dependency_injection_dagger_hilt.products.domain.usecase.SearchProductsUseCase
 import com.anywhere.dependency_injection_dagger_hilt.products.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel

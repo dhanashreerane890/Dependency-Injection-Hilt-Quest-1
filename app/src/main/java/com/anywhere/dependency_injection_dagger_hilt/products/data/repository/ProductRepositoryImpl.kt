@@ -4,14 +4,13 @@ import android.util.Log
 import com.anywhere.dependency_injection_dagger_hilt.products.data.local.ProductDao
 import com.anywhere.dependency_injection_dagger_hilt.products.data.mapper.ProductDtoMapper
 import com.anywhere.dependency_injection_dagger_hilt.products.data.remote.ProductApiService
-import com.anywhere.dependency_injection_dagger_hilt.products.domain.model.product.Product
-import com.anywhere.dependency_injection_dagger_hilt.products.domain.model.product.SearchParams
-import com.anywhere.dependency_injection_dagger_hilt.products.domain.model.product.SortOrder
+import com.anywhere.dependency_injection_dagger_hilt.products.domain.model.Product
+import com.anywhere.dependency_injection_dagger_hilt.products.domain.model.SearchParams
+import com.anywhere.dependency_injection_dagger_hilt.products.domain.model.SortOrder
 import com.anywhere.dependency_injection_dagger_hilt.products.domain.repository.ProductRepository
 import com.anywhere.dependency_injection_dagger_hilt.products.util.Resource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import retrofit2.HttpException
 import javax.inject.Inject
 
 class ProductRepositoryImpl @Inject constructor(

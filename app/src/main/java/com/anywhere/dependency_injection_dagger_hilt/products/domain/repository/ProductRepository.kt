@@ -1,7 +1,7 @@
 package com.anywhere.dependency_injection_dagger_hilt.products.domain.repository
 
-import com.anywhere.dependency_injection_dagger_hilt.products.domain.model.product.Product
-import com.anywhere.dependency_injection_dagger_hilt.products.domain.model.product.SearchParams
+import com.anywhere.dependency_injection_dagger_hilt.products.domain.model.Product
+import com.anywhere.dependency_injection_dagger_hilt.products.domain.model.SearchParams
 import com.anywhere.dependency_injection_dagger_hilt.products.util.Resource
 import kotlinx.coroutines.flow.Flow
 

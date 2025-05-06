@@ -1,4 +1,4 @@
-package com.anywhere.dependency_injection_dagger_hilt.products.domain.model.product
+package com.anywhere.dependency_injection_dagger_hilt.products.domain.model
 
 
 data class SearchParams(
