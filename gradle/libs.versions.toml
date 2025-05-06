@@ -12,6 +12,8 @@ retrofit = "2.9.0"
 lifecycle = "2.6.2"
 compose = "1.5.0"
 navigation-compose = "2.7.3"
+room = "2.6.1"
+
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -39,6 +41,9 @@ lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", v
 compose-ui = { module = "androidx.compose.ui:ui", version.ref = "compose" }
 navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigation-compose" }
 hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version = "1.1.0" }
+
+room-ktx = { group = "androidx.room", name  = "room-ktx", version.ref = "room"}
+room-compiler = { group = "androidx.room", name  = "room-compiler", version.ref = "room"}
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

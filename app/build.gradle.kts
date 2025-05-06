@@ -75,4 +75,7 @@ dependencies {
 
     implementation(libs.compose.ui)
     implementation(libs.navigation.compose)
+
+    implementation(libs.room.ktx)
+    kapt(libs.room.compiler)
 }
